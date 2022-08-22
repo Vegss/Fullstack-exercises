@@ -3,11 +3,9 @@ import { useEffect, useState } from "react";
 
 const Languages = ({languageKeys, filtered}) => {
   return(
-    languageKeys.map((key, index) =>
-      <div key={index}>
-        <li key={index}>{filtered[0].languages[key]}</li>
-      </div>
-    )
+    languageKeys.forEach((key) => {
+      <li key={key}>{filtered[0].languages[key]}</li>
+    })
   )
 }
 
