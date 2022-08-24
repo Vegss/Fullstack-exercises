@@ -1,7 +1,20 @@
 import personService from './services/Persons'
 import { useEffect, useState } from 'react'
+import './index.css'
 
-// Filter form
+
+const Notification = ({ notification }) => {
+  if (notification === null){
+    return null
+  }
+  const {message , cName} = notification
+  return(
+    <div className={cName}>
+      {message}
+    </div>
+  )
+}
+
 const Filter = ({filterStr, handleFilterChange}) => {
   return(
   <form>
@@ -10,8 +23,7 @@ const Filter = ({filterStr, handleFilterChange}) => {
   )
 }
 
-// Adding person form
-const AddPerson = ({persons, setPersons}) => {
+const AddPerson = ({persons, setPersons, setMessage}) => {
   const [newName, setNewName] = useState('')
   const [newNum, setNewNum] = useState('')
 
@@ -37,13 +49,23 @@ const AddPerson = ({persons, setPersons}) => {
         .update(personObject, sameName.id)
         .then(response => {
           setPersons(persons.map(p => p.id === response.data.id ? response.data : p))
+          setMessage({message:`Updated ${response.data.name}`, cName:'success'})
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
       }
     }
     else{
       personService
       .create(personObject)
-      .then(response => setPersons(persons.concat(response.data)))
+      .then(response => { 
+        setPersons(persons.concat(response.data))
+        setMessage({message:`Added ${response.data.name}`, cName:'success'})
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
     }
     setNewName('')
     setNewNum('')
@@ -69,6 +91,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [filterStr, setFilterStr] = useState('')
   const [personsToShow, setPersonsToShow] = useState(persons)
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -87,6 +110,10 @@ const App = () => {
         .getAll()
         .then(response => {
           setPersons(response.data)
+          setMessage({message:`Deleted ${person.name}`, cName:'success'})
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
       })
     }
@@ -96,13 +123,13 @@ const App = () => {
     setFilterStr(event.target.value)
     setPersonsToShow(persons.filter(person => person.name.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1))
   }
-
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={message}/>
         <Filter filterStr={filterStr} handleFilterChange={handleFilterChange}/>
       <h2>add a new</h2>  
-        <AddPerson persons={persons} setPersons={setPersons} />
+        <AddPerson persons={persons} setPersons={setPersons} setMessage={setMessage}/>
       <h2>Numbers</h2>
         {
           filterStr === '' 
