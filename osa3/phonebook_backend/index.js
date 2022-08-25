@@ -1,6 +1,5 @@
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors')
 const app = express()
 
 
@@ -29,7 +28,6 @@ let persons = [
 
   app.use(express.json())
   app.use(morgan('tiny'))
-  app.use(cors())
 
   app.get('/info', (req, res) => {
     const current = Date()
