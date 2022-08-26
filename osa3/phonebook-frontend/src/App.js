@@ -66,6 +66,13 @@ const AddPerson = ({persons, setPersons, setMessage}) => {
           setMessage(null)
         }, 5000)
       })
+      .catch(error => {
+        console.log(error.response.data)
+        setMessage({message: `${error.response.data.error}`, cName:'error'})
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
     }
     setNewName('')
     setNewNum('')
