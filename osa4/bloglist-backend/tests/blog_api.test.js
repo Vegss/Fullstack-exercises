@@ -31,6 +31,25 @@ describe('Blogs on right format', () => {
 })
 
 describe('Adding a blog post', () => {
+  let headers
+  beforeEach(async () => {
+    const user = {
+      username: 'admin',
+      name: 'admin',
+      password: 'admin'
+    }
+    await api
+      .post('/api/users')
+      .send(user)
+
+    const response = await api
+      .post('/api/login')
+      .send(user)
+
+    headers = {
+      'Authorization': `Authorization ${response.body.token}`
+    }
+  })
 
   test('Posting a blog', async () => {
     const newBlog =   {
@@ -43,6 +62,7 @@ describe('Adding a blog post', () => {
       .post('/api/blogs')
       .send(newBlog)
       .expect(201)
+      .set(headers)
       .expect('Content-Type', /application\/json/)
 
     const blogsAfter = await blogsInDatabase()
@@ -62,6 +82,7 @@ describe('Adding a blog post', () => {
       .post('/api/blogs')
       .send(newBlog)
       .expect(201)
+      .set(headers)
       .expect('Content-Type', /application\/json/)
     const blogs = await blogsInDatabase()
     const testBlog = await blogs.find(blog => blog.title === 'without likes')
@@ -76,6 +97,7 @@ describe('Adding a blog post', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set(headers)
       .expect(400)
   })
 })
