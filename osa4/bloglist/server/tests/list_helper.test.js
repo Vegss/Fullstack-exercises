@@ -32,7 +32,7 @@ const multipleBlogs = [
     author: 'John',
     url: 'http://test4.com',
     likes: 10
-  },
+  }
 ]
 
 test('dummy returns one', () => {
