@@ -54,6 +54,12 @@ const AddPerson = ({persons, setPersons, setMessage}) => {
             setMessage(null)
           }, 5000)
         })
+        .catch(error => {
+          setMessage({message: `Information of ${sameName.name} has already been removed from server`, cName: 'error'})
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
       }
     }
     else{
@@ -62,6 +68,13 @@ const AddPerson = ({persons, setPersons, setMessage}) => {
       .then(response => { 
         setPersons(persons.concat(response.data))
         setMessage({message:`Added ${response.data.name}`, cName:'success'})
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
+      .catch(error => {
+        console.log(error)
+        setMessage({message: error.response.data.error, cName:'error'})
         setTimeout(() => {
           setMessage(null)
         }, 5000)
