@@ -1,0 +1,58 @@
+import { useState } from 'react'
+import blogService from '../services/blogs'
+
+
+const BlogForm = ({ setNotification, setBlogs, blogs }) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const newBlog = {
+      title: title,
+      author: author,
+      url: url
+    }
+    try {
+      await blogService
+        .create(newBlog)
+      setBlogs(blogs.concat(newBlog))
+      setAuthor('')
+      setTitle('')
+      setUrl('')
+      setNotification({ message: `a new blog ${title} added`, type: 'success' })
+      setTimeout(() => {
+        setNotification('')
+      }, 5000)
+    } catch (err) {
+      setNotification({ message: err.message, type: 'error' })
+      setTimeout(() => {
+        setNotification('')
+      }, 5000)
+    }
+  }
+
+  return(
+    <form onSubmit={handleSubmit}>
+      <label>title: </label>
+      <input 
+        onChange={(e) => setTitle(e.target.value)}
+        value={title}
+      /> <br/>
+      <label>author: </label>
+      <input 
+        onChange={(e) => setAuthor(e.target.value)}
+        value={author}
+      /> <br/>
+      <label>url: </label>
+      <input 
+        onChange={(e) => setUrl(e.target.value)}
+        value={url}
+      /> <br/>
+      <button type='submit'>create</button>
+    </form>
+  )
+}
+
+export default BlogForm
