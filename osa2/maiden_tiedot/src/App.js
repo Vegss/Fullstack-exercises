@@ -1,74 +1,34 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+import Countries from './components/Countries'
+import axios from 'axios'
 
-const Languages = ({languageKeys, filtered}) => {
-  return(
-    languageKeys.forEach((key) => {
-      <li key={key}>{filtered[0].languages[key]}</li>
-    })
-  )
-}
 
-const MoreAbout = ({filtered}) => {
-  const languageKeys = Object.keys(filtered[0].languages)
-  return(
-  <div>
-    <h1>{filtered[0].name.common}</h1>
-      <p>capital {filtered[0].capital}</p>
-      <p>area {filtered[0].area}</p>
-    <h3>languages:</h3>
-      <Languages languageKeys={languageKeys} filtered={filtered}/>
-    <img 
-      src={filtered[0].flags.png}
-      alt="country flag"
-     />
-  </div>
-  )
-}
-
-const Content = ({filtered}) => {
-  if (filtered.length > 10) {
-    return(
-      <p>Too many matches, specify another filter</p>
-    )
-  }
-  if (filtered.length === 1) {
-    return(
-      <MoreAbout filtered={filtered}/>
-    )
-  }
-  return(
-    filtered.map(country => 
-      <p key={country.name}>{country.name.common}</p>
-    )
-  )
-}
 
 const App = () => {
   const [countries, setCountries] = useState([])
+  const [toShow, setToShow] = useState(countries)
   const [filter, setFilter] = useState('')
-  const [filtered, setFiltered] = useState([])
+  const baseUrl = 'https://restcountries.com/v3.1'
 
   useEffect(() => {
-    axios
-    .get("https://restcountries.com/v3.1/all")
-    .then(response => {
+    axios.get(`${baseUrl}/all`).then(response => {
       setCountries(response.data)
+      setToShow(response.data)
     })
-  },[])
+  }, [])
 
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value)
-    const toShow = countries.filter(country => country.name.common.toLowerCase().includes(filter.toLowerCase()))
-    setFiltered(toShow)
-  }
+  useEffect(() => {
+    const filteredCountries = countries.filter(country => country.name.common.toLowerCase().includes(filter))
+    setToShow(filteredCountries)
+  }, [filter, countries])
 
   return (
-    <div>
-      <form>
-        <div>find countries <input value={filter} onChange={handleFilterChange}/></div>
-      </form>
-      <Content filtered={filtered}/>  
+    <div className='App'>
+      <label>find countries</label>
+      <input onChange={(e) => setFilter(e.target.value)} />
+      <div>
+        <Countries countries={toShow} setToShow={setToShow} />
+      </div>
     </div>
   );
 }
