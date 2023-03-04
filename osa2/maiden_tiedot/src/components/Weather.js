@@ -18,7 +18,7 @@ const Weather = ({ country }) => {
   return (
     <div>
       <h1>Weather in {country.capital}</h1>
-      <p>Temperature: {weatherData.main.temp-273.15} Celsius</p>
+      <p>Temperature: {Math.floor(weatherData.main.temp-273.15)} Celsius</p>
       <img src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt="Weather Icon"/>
       <p>Wind speed: {weatherData.wind.speed} m/s</p>
     </div>
