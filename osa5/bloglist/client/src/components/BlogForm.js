@@ -16,9 +16,8 @@ const BlogForm = ({ setNotification, setBlogs, blogs, blogFormRef }) => {
     }
     blogFormRef.current()
     try {
-      await blogService
-        .create(newBlog)
-      setBlogs(blogs.concat(newBlog))
+      const returnedBlog = await blogService.create(newBlog)
+      setBlogs(blogs.concat(returnedBlog))
       setAuthor('')
       setTitle('')
       setUrl('')

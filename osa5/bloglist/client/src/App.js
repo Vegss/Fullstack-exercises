@@ -41,7 +41,6 @@ const App = () => {
     e.preventDefault()
     try {
       const loggedUser = await loginService.login(username, password)
-      console.log(loggedUser)
       setUser(loggedUser)
       window.localStorage.setItem('userToken', JSON.stringify(loggedUser.token))
       window.localStorage.setItem('username', JSON.stringify(loggedUser.username))
@@ -82,15 +81,15 @@ const App = () => {
     <div>
       <h1>blogs</h1>
       <Notification message={notification.message} type={notification.type} />
-      <p style={{display: 'inline'}}>logged in as {username} </p>
+      <p style={{ display: 'inline' }}>logged in as {username} </p>
       <button onClick={handleLogOut}>Log out</button>
       <div>
-        <Togglable buttonLabel='new note' ref={blogFormRef}>
+        <Togglable buttonLabel='create new note' ref={blogFormRef}>
           <h1>create new</h1>
           <BlogForm setNotification={setNotification} setBlogs={setBlogs} blogs={blogs} blogFormRef={blogFormRef}/>
         </Togglable>
       </div>
-      {blogs.map(blog =>
+      {blogs.map(blog => 
         <Blog key={blog.id} blog={blog} />
       )}
     </div>

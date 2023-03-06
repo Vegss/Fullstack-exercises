@@ -28,13 +28,12 @@ const Blog = ({ blog }) => {
   }
   return (
     <div style={blogStyle}>
-        <p style={{ display: 'inline' }}>{blog.title} {blog.author} </p>
-        <button onClick={() => setView(!view)} >{buttonText}</button> <br/>
-        <p>{blog.url}</p>
-        <p style={{ display: 'inline' }}>{blog.likes} </p>
-        <button onClick={handleLikes} >like</button> <br/>
-        <p>{blog.user.name}</p>
-
+      <p style={{ display: 'inline' }}>{blog.title} {blog.author} </p>
+      <button onClick={() => setView(!view)} >{buttonText}</button> <br/>
+      <p>{blog.url}</p>
+      <p style={{ display: 'inline' }}>{blog.likes} </p>
+      <button onClick={handleLikes} >like</button> <br/>
+      <p>{blog.user.name}</p>
     </div>
   )
 }
