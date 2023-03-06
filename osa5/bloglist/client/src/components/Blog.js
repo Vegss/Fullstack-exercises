@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLikes, username, handleDelete }) => {
   const [view, setView] = useState(false)
 
   const blogStyle = {
@@ -10,10 +10,6 @@ const Blog = ({ blog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  }
-
-  const handleLikes = () => {
-    console.log('like')
   }
 
   const buttonText = view ? 'hide' : 'view'
@@ -32,8 +28,11 @@ const Blog = ({ blog }) => {
       <button onClick={() => setView(!view)} >{buttonText}</button> <br/>
       <p>{blog.url}</p>
       <p style={{ display: 'inline' }}>{blog.likes} </p>
-      <button onClick={handleLikes} >like</button> <br/>
+      <button onClick={() => handleLikes(blog)} >like</button> <br/>
       <p>{blog.user.name}</p>
+      {blog.user.name === username && 
+        <button style={{background: "red"}} onClick={() => handleDelete(blog.id)}>Delete</button>
+      }
     </div>
   )
 }

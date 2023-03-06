@@ -57,6 +57,25 @@ const App = () => {
     }
   }
 
+  const handleLikes = async (blog) => {
+    const updatedBlog = {
+      id: blog.id,
+      user: blog.user,
+      likes: blog.likes+1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url
+    }
+    const returnedBlog = await blogService.update(updatedBlog)
+    const newBlogs = blogs.map(b => blog.id === b.id ? returnedBlog : b)
+    setBlogs(newBlogs)
+  }
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete blog?')) await blogService.deleteBlog(id)
+    setBlogs(blogs.filter(blog => blog.id !== id))
+  }
+
   const handleUserChange = (e) => setUsername(e.target.value)
   const handlePasswordChange = (e) => setPassword(e.target.value)
 
@@ -89,8 +108,8 @@ const App = () => {
           <BlogForm setNotification={setNotification} setBlogs={setBlogs} blogs={blogs} blogFormRef={blogFormRef}/>
         </Togglable>
       </div>
-      {blogs.map(blog => 
-        <Blog key={blog.id} blog={blog} />
+      {blogs.sort((a, b) => b.likes - a.likes ).map(blog => 
+        <Blog key={blog.id} blog={blog} handleLikes={handleLikes} handleDelete={handleDelete} username={username}/>
       )}
     </div>
   )
