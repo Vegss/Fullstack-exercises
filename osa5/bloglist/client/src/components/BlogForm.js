@@ -36,17 +36,17 @@ const BlogForm = ({ setNotification, setBlogs, blogs, blogFormRef }) => {
   return(
     <form onSubmit={addBlog}>
       <label>title: </label>
-      <input 
+      <input
         onChange={(e) => setTitle(e.target.value)}
         value={title}
       /> <br/>
       <label>author: </label>
-      <input 
+      <input
         onChange={(e) => setAuthor(e.target.value)}
         value={author}
       /> <br/>
       <label>url: </label>
-      <input 
+      <input
         onChange={(e) => setUrl(e.target.value)}
         value={url}
       /> <br/>

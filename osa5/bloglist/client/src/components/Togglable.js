@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState } from 'react'
 
 
 const Togglable = forwardRef((props, ref) => {
@@ -26,6 +26,6 @@ const Togglable = forwardRef((props, ref) => {
   )
 })
 
-
+Togglable.displayName = 'Togglable'
 
 export default Togglable

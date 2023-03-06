@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 
 const Blog = ({ blog, handleLikes, username, handleDelete }) => {
@@ -30,8 +30,8 @@ const Blog = ({ blog, handleLikes, username, handleDelete }) => {
       <p style={{ display: 'inline' }}>{blog.likes} </p>
       <button onClick={() => handleLikes(blog)} >like</button> <br/>
       <p>{blog.user.name}</p>
-      {blog.user.name === username && 
-        <button style={{background: "red"}} onClick={() => handleDelete(blog.id)}>Delete</button>
+      {blog.user.name === username &&
+        <button style={{ background: 'red' }} onClick={() => handleDelete(blog.id)}>Delete</button>
       }
     </div>
   )
