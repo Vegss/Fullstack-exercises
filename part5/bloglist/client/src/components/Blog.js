@@ -17,21 +17,23 @@ const Blog = ({ blog, handleLikes, username, handleDelete }) => {
   if (!view) {
     return (
       <div style={blogStyle}>
-        <p style={{ display: 'inline' }}>{blog.title} {blog.author} </p>
-        <button onClick={() => setView(!view)} >{buttonText}</button>
+        <span className='title'>{blog.title} </span>
+        <span className='author'>{blog.author}</span>
+        <button className='view' onClick={() => setView(!view)} >{buttonText}</button>
       </div>
     )
   }
   return (
-    <div style={blogStyle}>
-      <p style={{ display: 'inline' }}>{blog.title} {blog.author} </p>
+    <div style={blogStyle} data-testid='blog-details'>
+      <span>{blog.title} </span>
+      <span>{blog.author}</span>
       <button onClick={() => setView(!view)} >{buttonText}</button> <br/>
       <p>{blog.url}</p>
-      <p style={{ display: 'inline' }}>{blog.likes} </p>
-      <button onClick={() => handleLikes(blog)} >like</button> <br/>
+      <span id='likes'>{blog.likes} </span>
+      <button onClick={() => handleLikes(blog)} id='like-button' >like</button> <br/>
       <p>{blog.user.name}</p>
-      {blog.user.name === username &&
-        <button style={{ background: 'red' }} onClick={() => handleDelete(blog.id)}>Delete</button>
+      {blog.user.username === username &&
+        <button id='delete-button' style={{ background: 'red' }} onClick={() => handleDelete(blog.id)}>Delete</button>
       }
     </div>
   )

@@ -3,7 +3,7 @@ const baseUrl = '/api/login'
 
 const login = (username, password) => {
   const user = {
-    username: username, 
+    username: username,
     password: password
   }
   const request = axios.post(baseUrl, user)
@@ -11,5 +11,4 @@ const login = (username, password) => {
   return request.then(response => response.data)
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default { login }

@@ -1,56 +1,39 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-
-const BlogForm = ({ setNotification, setBlogs, blogs, blogFormRef }) => {
+const BlogForm = ({ addBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = async (e) => {
+  const handleAddBlog = (e) => {
     e.preventDefault()
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url
-    }
-    blogFormRef.current()
-    try {
-      const returnedBlog = await blogService.create(newBlog)
-      setBlogs(blogs.concat(returnedBlog))
-      setAuthor('')
-      setTitle('')
-      setUrl('')
-      setNotification({ message: `a new blog ${title} added`, type: 'success' })
-      setTimeout(() => {
-        setNotification('')
-      }, 5000)
-    } catch (err) {
-      setNotification({ message: err.message, type: 'error' })
-      setTimeout(() => {
-        setNotification('')
-      }, 5000)
-    }
+    addBlog({ title: title, author: author, url: url })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return(
-    <form onSubmit={addBlog}>
+    <form onSubmit={handleAddBlog}>
       <label>title: </label>
       <input
         onChange={(e) => setTitle(e.target.value)}
         value={title}
+        id='title-input'
       /> <br/>
       <label>author: </label>
       <input
         onChange={(e) => setAuthor(e.target.value)}
         value={author}
+        id='author-input'
       /> <br/>
       <label>url: </label>
       <input
         onChange={(e) => setUrl(e.target.value)}
         value={url}
+        id='url-input'
       /> <br/>
-      <button type='submit'>create</button>
+      <button id='create-button' type='submit'>create</button>
     </form>
   )
 }

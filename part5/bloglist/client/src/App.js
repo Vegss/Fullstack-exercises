@@ -57,6 +57,23 @@ const App = () => {
     }
   }
 
+  const addBlog = async (newBlog) => {
+    blogFormRef.current()
+    try {
+      const returnedBlog = await blogService.create(newBlog)
+      setBlogs(blogs.concat(returnedBlog))
+      setNotification({ message: `a new blog ${newBlog.title} added`, type: 'success' })
+      setTimeout(() => {
+        setNotification('')
+      }, 5000)
+    } catch (err) {
+      setNotification({ message: err.message, type: 'error' })
+      setTimeout(() => {
+        setNotification('')
+      }, 5000)
+    }
+  }
+
   const handleLikes = async (blog) => {
     const updatedBlog = {
       id: blog.id,
@@ -66,9 +83,9 @@ const App = () => {
       title: blog.title,
       url: blog.url
     }
-    const returnedBlog = await blogService.update(updatedBlog)
-    const newBlogs = blogs.map(b => blog.id === b.id ? returnedBlog : b)
+    const newBlogs = blogs.map(b => blog.id === b.id ? updatedBlog : b)
     setBlogs(newBlogs)
+    await blogService.update(updatedBlog)
   }
 
   const handleDelete = async (id) => {
@@ -81,8 +98,11 @@ const App = () => {
 
   const handleLogOut = () => {
     setUser(null)
+    setUsername('')
+    setPassword('')
     window.localStorage.clear()
   }
+
   if (!user) {
     return (
       <LoginForm
@@ -105,7 +125,7 @@ const App = () => {
       <div>
         <Togglable buttonLabel='create new note' ref={blogFormRef}>
           <h1>create new</h1>
-          <BlogForm setNotification={setNotification} setBlogs={setBlogs} blogs={blogs} blogFormRef={blogFormRef}/>
+          <BlogForm addBlog={addBlog}/>
         </Togglable>
       </div>
       {blogs.sort((a, b) => b.likes - a.likes ).map(blog =>
