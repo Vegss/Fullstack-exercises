@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+import { Button } from 'react-bootstrap'
 
-const BlogForm = ({ addBlog }) => {
+const BlogForm = ({ blogFormRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -11,6 +14,13 @@ const BlogForm = ({ addBlog }) => {
     setTitle('')
     setAuthor('')
     setUrl('')
+  }
+
+  const dispatch = useDispatch()
+
+  const addBlog = async (newBlog) => {
+    blogFormRef.current()
+    dispatch(createBlog(newBlog))
   }
 
   return(
@@ -33,7 +43,7 @@ const BlogForm = ({ addBlog }) => {
         value={url}
         id='url-input'
       /> <br/>
-      <button id='create-button' type='submit'>create</button>
+      <Button variant='success' id='create-button' type='submit'>create</Button>
     </form>
   )
 }

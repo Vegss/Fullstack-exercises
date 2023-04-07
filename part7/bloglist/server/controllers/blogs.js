@@ -33,16 +33,16 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(blog)
 })
 
-blogsRouter.delete("/:id", async (request, response) => {
+blogsRouter.delete('/:id', async (request, response) => {
   const token = request.token
   const user = request.user
   const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!(token && decodedToken.id)) return response.status(401).json({ error: "token missing or invalid" })
+  if (!(token && decodedToken.id)) return response.status(401).json({ error: 'token missing or invalid' })
 
   const id = request.params.id
   const blog = await Blog.findById(id)
 
-  if (blog.user.toString() !== user.id.toString()) return response.status(401).json({ error: "unauthorized operation" })
+  if (blog.user.toString() !== user.id.toString()) return response.status(401).json({ error: 'unauthorized operation' })
   
   await Blog.deleteOne({ _id: id })
   return response.status(204).end()
@@ -54,10 +54,24 @@ blogsRouter.put('/:id', async (request, response) => {
     author: author,
     title: title,
     url: url,
-    likes: likes,
+    likes: likes
   }
   const result = await Blog.findByIdAndUpdate(request.params.id, updatedBlog, { new: true })
   response.status(201).json(result)
+})
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { content } = request.body
+  const id = request.params.id
+  const blog = await Blog.findById(id).populate('user', { username: 1, name: 1 })
+
+  blog.comments = blog.comments.concat(content)
+
+  const result = await blog.save()
+
+  if (!result) response.status(404).end()
+  
+  response.status(200).json(result.toJSON())
 })
 
 module.exports = blogsRouter

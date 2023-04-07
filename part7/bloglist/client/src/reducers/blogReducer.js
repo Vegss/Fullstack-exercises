@@ -19,6 +19,10 @@ const blogSlice = createSlice({
     },
     like(state, action) {
       return state.map(b => b.id === action.payload ? { ...b, likes: b.likes+1 } : b)
+    },
+    comment(state, action) {
+      const { id, comment } = action.payload
+      return state.map(b => b.id === id ? { ...b, comments: b.comments.concat(comment) } : b)
     }
   }
 })
@@ -38,7 +42,7 @@ export const createBlog = (blog) => {
       dispatch(createNotification(`a new blog ${blog.title} added`, 'success'))
     } catch (err) {
       console.log(err)
-      dispatch(createNotification(err.response.data.error, 'error'))
+      dispatch(createNotification(err.response.data.error, 'danger'))
     }
   }
 }
@@ -50,7 +54,7 @@ export const deleteBlog = (id) => {
       await blogService.deleteBlog(id)
       dispatch(createNotification('Blog deleted successfully.', 'success'))
     } catch (err) {
-      dispatch(createNotification(err.response.data.error, 'error'))
+      dispatch(createNotification(err.response.data.error, 'danger'))
     }
   }
 }
@@ -62,7 +66,14 @@ export const likeBlog = (blog) => {
   }
 }
 
+export const createComment = (content, id) => {
+  return async (dispatch) => {
+    dispatch(comment({ comment: content, id: id }))
+    await blogService.commentBlog(id, content)
+  }
+}
 
-export const { setBlogs, addBlog, removeBlog, like } = blogSlice.actions
+
+export const { setBlogs, addBlog, removeBlog, like, comment } = blogSlice.actions
 
 export default blogSlice.reducer

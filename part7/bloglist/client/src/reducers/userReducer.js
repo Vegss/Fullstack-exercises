@@ -38,7 +38,7 @@ export const setUser = (user) => {
       dispatch(set({ token: loginResponse.token, user: loginResponse.username }))
       dispatch(createNotification('Login successful', 'success'))
     } catch (err) {
-      dispatch(createNotification(err.response.data.error, 'error'))
+      dispatch(createNotification(err.response.data.error, 'danger'))
     }
   }
 }
