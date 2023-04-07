@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import '../app.css'
 import { Alert } from 'react-bootstrap'
 
 const Notification = () => {

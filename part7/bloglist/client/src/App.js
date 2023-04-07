@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/userReducer'
 import { Routes, Route } from 'react-router-dom'
-import Container from 'react-bootstrap/esm/Container'
 
 
 const App = () => {
@@ -26,9 +25,9 @@ const App = () => {
 
   if (!user.token) {
     return (
-      <Container className=''>
+      <div className='d-flex justify-content-center'>
         <LoginForm />
-      </Container>
+      </div>
     )
   }
 
