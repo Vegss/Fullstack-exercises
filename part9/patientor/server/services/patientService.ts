@@ -37,7 +37,7 @@ const correctType = (entries: Entry[]): boolean => {
     switch (entry.type) {
       case 'Hospital':
         return true;
-      case 'OccupationHealth':
+      case 'OccupationalHealth':
         return true;
       case 'HealthCheck':
         return true;
