@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { NonSensitiveDiaryEntry } from "../types"
+import { NonSensitiveDiaryEntry, Notification } from "../types"
 import diaryService from "../services/diaryService"
 
 export const useDiaries = () => {
@@ -17,5 +17,18 @@ export const useDiaries = () => {
     setDiaries(diaries.concat(newDiary));
   }
 
-  return [diaries, updateDiaries] as const
+  return [diaries, updateDiaries] as const;
+}
+
+export const useNotification = () => {
+  const [notification, setNotification] = useState<Notification>();
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [notification]);
+
+  return [notification, setNotification] as const;
 }

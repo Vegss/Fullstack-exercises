@@ -1,6 +1,6 @@
 import { NewDiaryEntry, Visibility, Weather } from "./types"
 
-export const toNewDiary = (date: string, weather: Weather, visibility: Visibility, comment: string): NewDiaryEntry => {
+export const toNewDiary = (date: string, visibility: Visibility, weather: Weather,  comment: string): NewDiaryEntry => {
   return {
     date: date,
     weather: weather,

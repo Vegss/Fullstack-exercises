@@ -1,5 +1,8 @@
 import axios from "axios";
 import { NewDiaryEntry } from "../types";
+import { useNotification } from "../hooks";
+
+const setNotification = useNotification()[1]
 
 const baseUrl = 'http://localhost:3001/api/diaries';
 
@@ -14,9 +17,7 @@ const createEntry = async (newDiary: NewDiaryEntry) => {
     return response.data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
-      console.log(err.response)
-    } else {
-      console.log(err)
+      setNotification(err.message);
     }
   }
 }
