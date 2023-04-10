@@ -1,11 +1,11 @@
 import patientData from "../data/patients";
 import { v1 as uuid } from 'uuid';
-import { Patient, CensoredPatient, NewPatient } from "../types";
+import { Patient, NonSensitivePatient, NewPatient, Entry } from "../types";
 
 const entries: Patient[] = patientData;
 
-const getEntries = (): CensoredPatient[] => {
-  const nonSensitiveEntries = entries.map((entry: CensoredPatient) => {
+const getEntries = (): NonSensitivePatient[] => {
+  const nonSensitiveEntries = entries.map((entry: NonSensitivePatient) => {
     return {
       id: entry.id,
       name: entry.name,
@@ -18,10 +18,10 @@ const getEntries = (): CensoredPatient[] => {
   return nonSensitiveEntries;
 };
 
-const createPatient = (patient: NewPatient): CensoredPatient => {
+const createPatient = (patient: NewPatient): NonSensitivePatient => {
   const id: string = uuid();
 
-  const newPatient: Patient = { ...patient, id: id };
+  const newPatient: Patient = { ...patient, entries: [], id: id };
   entries.push(newPatient);
   return {
     id: newPatient.id,
@@ -32,7 +32,39 @@ const createPatient = (patient: NewPatient): CensoredPatient => {
   };
 };
 
+const correctType = (entries: Entry[]): boolean => {
+  entries.forEach(entry => {
+    switch (entry.type) {
+      case 'Hospital':
+        return true;
+      case 'OccupationHealth':
+        return true;
+      case 'HealthCheck':
+        return true;
+      default:
+        return false;
+    }
+  });
+  return true;
+};
+
+const getPatientById = (id: string): Patient => {
+  const patient = entries.find(entry => entry.id === id);
+  if (!patient) throw new Error(`Patient ${id} not found`);
+  if (!correctType(patient.entries)) throw new Error(`Patients entry has wrong type`);
+  return {
+    id: patient.id,
+    name: patient.name,
+    ssn: patient.ssn,
+    dateOfBirth: patient.dateOfBirth,
+    entries: patient.entries,
+    gender: patient.gender,
+    occupation: patient.occupation
+  };
+};
+
 export default {
   getEntries,
-  createPatient
+  createPatient,
+  getPatientById
 };
