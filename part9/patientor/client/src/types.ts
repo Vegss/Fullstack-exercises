@@ -24,6 +24,7 @@ export interface BaseEntry {
 }
 
 export interface HospitalEntry extends BaseEntry {
+  type: 'Hospital';
   discharge: {
     date: string;
     criteria: string;
@@ -43,6 +44,7 @@ export interface HealthCheckEntry extends BaseEntry {
 }
 
 export interface OccupationalHealthcare extends BaseEntry {
+  type: 'OccupationalHealthcare'
   employerName: string;
   sickLeave?: {
     startDate: string;

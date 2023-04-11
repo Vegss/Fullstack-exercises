@@ -5,6 +5,7 @@ import { Container, Typography } from '@mui/material';
 import { FemaleRounded, MaleRounded, Transgender } from '@mui/icons-material';
 import patientService from '../../services/patients';
 import diagnosisService from '../../services/diagnoses'
+import Entries from './Entries';
 
 
 const getGenderIcon = (gender: string): ReactElement | null => {
@@ -47,14 +48,8 @@ const PatientInfoPage = () => {
     }
 
   }, [id])
-
-  const findDiagnosis = (code: string): string => {
-    const diagnosis = diagnoses?.find(diagnosis => diagnosis.code === code)
-    if (!diagnosis) return ''
-    return diagnosis.name
-  }
   
-  if (!patient) return null
+  if (!patient || !diagnoses) return <div>loading patient and diagnoses data...</div>
   
   const genderIcon = getGenderIcon(patient.gender);
 
@@ -71,24 +66,7 @@ const PatientInfoPage = () => {
         Entries
       </Typography>
       <Typography component={'span'} variant='body1'>
-        { patient.entries &&
-          patient.entries.map((entry) => {
-            return (
-              <div key={entry.id}>
-                {entry.date} <i>{entry.description}</i>
-                <div>
-                  <ul>
-                    { entry.diagnosisCodes && diagnoses &&
-                      entry.diagnosisCodes.map((code) => {
-                        return <li key={code}>{code} {findDiagnosis(code)}</li>
-                      })
-                    }
-                  </ul>
-                </div>
-              </div>
-            )
-          })
-        }
+        <Entries patient={patient} diagnoses={diagnoses} />
       </Typography>
     </Container>
   )
