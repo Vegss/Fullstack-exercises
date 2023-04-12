@@ -1,6 +1,7 @@
 import patientData from "../data/patients";
 import { v1 as uuid } from 'uuid';
-import { Patient, NonSensitivePatient, NewPatient, Entry } from "../types";
+import { Patient, NonSensitivePatient, NewPatient, Entry, EntryWithoutId } from "../types";
+import { toHealthCheckEntry, toHospitalEntry, toOccupationalEntry } from "../utils/toNewEntry";
 
 const entries: Patient[] = patientData;
 
@@ -37,7 +38,7 @@ const correctType = (entries: Entry[]): boolean => {
     switch (entry.type) {
       case 'Hospital':
         return true;
-      case 'OccupationalHealth':
+      case 'OccupationalHealthcare':
         return true;
       case 'HealthCheck':
         return true;
@@ -63,8 +64,36 @@ const getPatientById = (id: string): Patient => {
   };
 };
 
+const assertNever = (obj: never): never => {
+  throw new Error('Invalid discriminator: ' + JSON.stringify(obj));
+};
+
+const createEntry = (patientId: string, newEntry: EntryWithoutId): Entry => {
+  const patient = patientData.find(patient => patient.id === patientId);
+  let createdEntry: Entry;
+  if (!patient) throw new Error('Patient not found');
+  switch (newEntry.type) {
+    case 'Hospital':
+      createdEntry = toHospitalEntry(newEntry);
+      patient.entries.push(createdEntry);
+      return createdEntry;
+    case 'OccupationalHealthcare':
+      createdEntry = toOccupationalEntry(newEntry);
+      patient.entries.push(createdEntry);
+      return createdEntry;
+    case 'HealthCheck':
+      createdEntry = toHealthCheckEntry(newEntry);
+      patient.entries.push(createdEntry);
+      return createdEntry;
+    default:
+      assertNever(newEntry);
+  }
+  throw new Error('Failed to create entry: ' + newEntry);
+};
+
 export default {
   getEntries,
+  createEntry,
   createPatient,
   getPatientById
 };

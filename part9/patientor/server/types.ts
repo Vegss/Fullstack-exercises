@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BaseEntry {
   id: string;
   description: string;
@@ -8,11 +7,13 @@ export interface BaseEntry {
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
+export interface Discharge {
+  date: string;
+  criteria: string;
+}
 export interface HospitalEntry extends BaseEntry {
-  discharge: {
-    date: string;
-    criteria: string;
-  };
+  type: 'Hospital';
+  discharge: Discharge;
 }
 
 export enum HealthCheckRating {
@@ -27,12 +28,14 @@ export interface HealthCheckEntry extends BaseEntry {
   healthCheckRating: HealthCheckRating;
 }
 
+export interface SickLeave {
+  startDate: string;
+  endDate: string;
+}
 export interface OccupationalHealthcare extends BaseEntry {
+  type: 'OccupationalHealthcare';
   employerName: string;
-  sickLeave?: {
-    startDate: string;
-    endDate: string;
-  }
+  sickLeave?: SickLeave;
 }
 
 export interface Diagnosis {
@@ -59,4 +62,13 @@ export enum Gender {
 
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 export type NewPatient = Omit<Patient, 'id'>;
-export type Entry = OccupationalHealthcare | HospitalEntry | HealthCheckEntry;
+export type Entry = HospitalEntry | OccupationalHealthcare | HealthCheckEntry;
+
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+
+
+export type HospitalEntryWithoutId = Omit<HospitalEntry, "id">;
+export type OccupationalEntryWithoutId = Omit<OccupationalHealthcare, "id">;
+export type HealthCheckEntryWithoutId = Omit<HealthCheckEntry, "id">;

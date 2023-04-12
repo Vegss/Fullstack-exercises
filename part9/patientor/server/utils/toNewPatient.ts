@@ -1,23 +1,8 @@
-import { Gender, NewPatient } from "./types";
+import { Gender, NewPatient } from "../types";
+import { isDate, isGender, isSSN, isString } from "./typeGuards";
 
 const throwError = (field: string) => {
   throw new Error(`Incorrect or missing ${field}`);
-};
-
-const isString = (text: unknown): text is string => {
-  return typeof text === 'string' || text instanceof String;
-};
-
-const isDate = (date: unknown): date is Date => {
-  return Boolean(Date.parse(date as string));
-};
-
-const isGender = (gender: unknown): gender is Gender => {
-  return Object.values(Gender).map(v => v.toString()).includes(gender as string);
-};
-
-const isSSN = (ssn: string): boolean => {
-  return ssn.length === 10 && /\d\d\d\d\d\d/.test(ssn);
 };
 
 const parseName = (name: unknown): string => {
