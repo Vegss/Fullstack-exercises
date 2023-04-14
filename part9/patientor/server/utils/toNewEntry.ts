@@ -23,8 +23,8 @@ const parseSpecialist = (specialist: unknown): string => {
 };
 
 const parseDiagnosisCodes = (diagnosis: unknown): Array<Diagnosis['code']> => {
-  if (!diagnosis || typeof diagnosis !== 'object' || !('diagnosisCodes' in diagnosis)) return [] as Array<Diagnosis['code']>;
-  return diagnosis.diagnosisCodes as Array<Diagnosis['code']>;
+  if (!diagnosis) return [] as Array<Diagnosis['code']>;
+  return diagnosis as Array<Diagnosis['code']>;
 };
 
 const parseDischarge = (discharge: unknown): Discharge => {

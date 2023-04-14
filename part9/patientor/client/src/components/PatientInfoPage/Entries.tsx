@@ -14,10 +14,10 @@ const Entries = ({ patient, diagnoses }: { patient: Patient, diagnoses: Diagnosi
 
   return (
     <Stack
-    direction='column'
-    justifyContent='center'
-    alignItems='left'
-    spacing={3}
+      direction='column'
+      justifyContent='center'
+      alignItems='left'
+      spacing={3}
     >
       { patient.entries &&
           patient.entries.map((entry) => {

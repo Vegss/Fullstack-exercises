@@ -60,3 +60,7 @@ export interface Diagnosis {
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 export type Entry = OccupationalHealthcare | HospitalEntry | HealthCheckEntry;
+
+export type HospitalEntryWithoutId = Omit<HospitalEntry, "id">;
+export type OccupationalEntryWithoutId = Omit<OccupationalHealthcare, "id">;
+export type HealthCheckEntryWithoutId = Omit<HealthCheckEntry, "id">;
