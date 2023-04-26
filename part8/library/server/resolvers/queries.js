@@ -4,6 +4,9 @@ const Author = require('../models/Author')
 const queries = {
   bookCount: async () => Book.collection.countDocuments(),
   authorCount: async () => Author.collection.countDocuments(),
+  me: async (root, args, context) => {
+    return context.currentUser
+  },
   allBooks: async (root, args) => {
     if (args.author && args.genre) {
       const author = await Author.findOne({ name: args.author })
