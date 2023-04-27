@@ -23,12 +23,13 @@ mutation updateAuthor($name: String!, $setBornTo: Int!) {
 `
 
 export const ALL_BOOKS = gql`
-query {
-  allBooks {
+query allBooks($author: String, $genre: String) {
+  allBooks(author: $author, genre: $genre) {
     title
     author {
       name
     }
+    genres
     published
   }
 }
@@ -50,6 +51,15 @@ mutation createBook($title: String!, $author: String!, $published: Int!, $genres
     genres
   }
 }
+`
+
+export const ME = gql`
+  query {
+    me {
+      username
+      favoriteGenre
+    }
+  }
 `
 
 export const LOGIN = gql`
